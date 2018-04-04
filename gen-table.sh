@@ -2,8 +2,36 @@
 
 set -e
 
-logs="$(ls logs/base*.log|tail -n 1) \
-      $(ls logs/and-or*.log|tail -n 1)"
+if [ $# -eq "0" ]; then
+  diffs=$(find diffs -regex ".*\.diff" | xargs -i basename {} .diff)
+else
+  diffs=$@
+fi
+
+# We always want to include the base diff at the first position
+tmp=base
+# .. which means we have to filter all further occureces of 'base'.
+for diff in $diffs
+do
+  if [ $diff != "base" ]; then
+    # add to the list
+    tmp="$tmp $diff"
+  fi
+done
+
+diffs=$tmp
+
+# There's no way I know of to just map a function over each element
+# of a space-separated list inside in a variable. Hooray for sh!
+logs=""
+buildlogs=""
+for diff in $diffs
+do
+  log=$(ls logs/$diff*.log|tail -n1)
+  logs="$logs $log"
+  buildlog=$(ls logs/buildlog-$diff*.log|tail -n1)
+  buildlogs="$buildlogs $buildlog"
+done
 
 pruned=""
 for log in $logs;
@@ -23,6 +51,4 @@ do
   rm -f $log-pruned
 done
 
-buildlogs="$(ls logs/buildlog-base*|tail -n 1) \
-      $(ls logs/buildlog-and-or*|tail -n 1)"
 ./buildlog.pl $buildlogs > ghc-comp-table.tex

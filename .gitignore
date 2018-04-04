@@ -1,3 +1,6 @@
 logs/*
 diffs/*
 v*/
+nofib-*.tex
+nofib-*.txt
+ghc-*.tex
