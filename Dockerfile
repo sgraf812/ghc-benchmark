@@ -24,5 +24,5 @@ RUN apt-get install --yes valgrind
 RUN apt-get install --yes time
 
 RUN git clone --recursive git://git.haskell.org/ghc.git
-RUN git -C ghc/ checkout 68149452a793aedd8d468b689dc93fb2ba5ec436
+RUN git -C ghc/ checkout 0017a7b618353bf984d701f6d8ee2810a425e5b3
 RUN git -C ghc/ submodule update --init

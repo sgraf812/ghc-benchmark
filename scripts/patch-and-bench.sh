@@ -4,21 +4,22 @@ set -e
 
 if [ -z "$1" ]
 then
-  echo "Usage: $0 <patchbasename>"
+  echo "Usage: $0 <diffbasename>"
   exit 1
 fi
 
-if [ ! -e /patches/$1.patch ]
+if [ ! -e /diffs/$1.diff ]
 then
-  echo "No /patches/$1.patch"
+  echo "No /diffs/$1.diff"
   exit 1
 fi
 
 echo "Copying /ghc to $1"
 cp -r /ghc $1
 cd $1
-echo "Patching using /patches/$1.patch"
-patch -p1 < /patches/$1.patch || true
+echo "Patching using /diffs/$1.diff"
+# git diff makes patch fail sometimes... We'll try to compile nonetheless
+patch -p1 < /diffs/$1.diff || true
 echo "Running nofib"
 /scripts/run-nofib.sh
 

@@ -2,14 +2,23 @@
 
 set -e
 
-sudo docker build -t ghc-bench .
+if [ $# -eq "0" ]; then
+  DIFFS=$(find diffs -regex ".*\.diff" | xargs -i basename {} .diff)
+else
+  DIFFS=$@
+fi
 
-mkdir -p $PWD/logs
-mkdir -p $PWD/patches
-mkdir -p $PWD/scripts
+LOGS=$(readlink -f $PWD/logs)
+DIFFS=$(readlink -f $PWD/diffs)
+SCRIPTS=$(readlink -f $PWD/scripts)
 
-for p in patches/*
+mkdir -p $LOGS
+mkdir -p $DIFFS
+mkdir -p $SCRIPTS
+
+docker build -t ghc-bench .
+
+for diff in $DIFFS
 do
-  name="$(basename $p .patch)"
-  sudo docker run -i --tty --rm -v $PWD/logs:/logs -v $PWD/patches:/patches -v $PWD/scripts:/scripts ghc-bench /scripts/patch-and-run.sh $name
+  docker run -i --tty --rm -v $LOGS:/logs -v $DIFFS:/diffs -v $SCRIPTS:/scripts ghc-bench /scripts/diff-and-bench.sh $diff
 done

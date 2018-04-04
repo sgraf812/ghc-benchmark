@@ -29,7 +29,7 @@ echo variant: $variant
 
 name="$(date +'%Y-%m-%d-%H-%M')"
 
-patch="$(basename $PWD)"
+diff="$(basename $PWD)"
 
 echo name: $name
 
@@ -42,14 +42,14 @@ then
 	echo "BuildFlavour = bench" | cat - mk/build.mk.sample > mk/build.mk
     perl boot
 	./configure $cachegrindconf
-	/usr/bin/time -o buildtime-$name make -j3 2>&1 |
-		tee /logs/buildlog-$patch-$name.log
+	/usr/bin/time -o buildtime-$name make -j9 2>&1 |
+		tee /logs/buildlog-$diff-$name.log
 else
-	make -C ghc 2 -j3
+	make -C ghc 2 -j9
 fi
 cd nofib/
 make clean
 make boot
-(make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -RTS' -j4 NoFibRuns=1) 2>&1 | tee /logs/$patch-$name.log
+(make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -RTS' -j9 NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # fix a problem with nofib logs from cachegrind
-sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' /logs/$patch-$name.log
+sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' /logs/$diff-$name.log
