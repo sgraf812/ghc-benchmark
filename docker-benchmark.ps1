@@ -1,7 +1,10 @@
 param(
     [Parameter(Position=0)]
-    [string[]]$diffs=$(gci diffs/*.diff | % { $_.BaseName })
+    [string[]]$diffs=$(Get-ChildItem diffs/*.diff | ForEach-Object { $_.BaseName })
 )
+
+Write-Verbose "Benchmarking the following diffs:"
+Write-Verbose $diffs
 
 docker build -t ghc-bench .
 
