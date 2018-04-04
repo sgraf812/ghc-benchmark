@@ -8,17 +8,18 @@ else
   DIFFS=$@
 fi
 
-LOGS=$(readlink -f $PWD/logs)
-DIFFS=$(readlink -f $PWD/diffs)
-SCRIPTS=$(readlink -f $PWD/scripts)
+echo "Benchmarking the following diffs:"
+echo $DIFFS
 
-mkdir -p $LOGS
-mkdir -p $DIFFS
-mkdir -p $SCRIPTS
+PWD=$(readlink -f $PWD)
+
+mkdir -p $PWD/logs
+mkdir -p $PWD/diffs
+mkdir -p $PWD/scripts
 
 docker build -t ghc-bench .
 
 for diff in $DIFFS
 do
-  docker run -i --tty --rm -v $LOGS:/logs -v $DIFFS:/diffs -v $SCRIPTS:/scripts ghc-bench /scripts/patch-and-bench.sh $diff
+  docker run -i --tty --rm -v $PWD/logs:/logs -v $PWD/diffs:/diffs -v $PWD/scripts:/scripts ghc-bench /scripts/patch-and-bench.sh $diff
 done
