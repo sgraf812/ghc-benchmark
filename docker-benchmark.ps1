@@ -3,12 +3,11 @@ param(
     [string[]]$diffs=$(Get-ChildItem diffs/*.diff | ForEach-Object { $_.BaseName })
 )
 
-Write-Verbose "Benchmarking the following diffs:"
-Write-Verbose $diffs
+Write-Verbose "Benchmarking the following diffs: $diffs"
 
-mkdir -p $PWD/diffs
-mkdir -p $PWD/scripts
-mkdir -p $PWD/logs
+mkdir -Force $PWD/diffs > $null
+mkdir -Force $PWD/scripts > $null
+mkdir -Force $PWD/logs > $null
 
 docker build -t ghc-bench .
 
