@@ -6,6 +6,10 @@ param(
 Write-Verbose "Benchmarking the following diffs:"
 Write-Verbose $diffs
 
+mkdir -p $PWD/diffs
+mkdir -p $PWD/scripts
+mkdir -p $PWD/logs
+
 docker build -t ghc-bench .
 
 foreach($d in $diffs) {
