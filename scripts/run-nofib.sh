@@ -9,6 +9,7 @@ cachegrind=
 cachegrindconf=
 NoFibRuns=20
 clean=yes
+threads=$(($(nproc --all) + 1))
 
 
 # defaults for the thesis
@@ -42,14 +43,14 @@ then
 	echo "BuildFlavour = bench" | cat - mk/build.mk.sample > mk/build.mk
     perl boot
 	./configure $cachegrindconf
-	/usr/bin/time -o buildtime-$name make -j9 2>&1 |
+	/usr/bin/time -o buildtime-$name make -j$threads 2>&1 |
 		tee /logs/buildlog-$diff-$name.log
 else
-	make -C ghc 2 -j9
+	make -C ghc 2 -j$threads
 fi
 cd nofib/
 make clean
 make boot
-(make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -RTS' -j9 NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
+(make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -RTS' -j$threads NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # fix a problem with nofib logs from cachegrind
 sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' /logs/$diff-$name.log
