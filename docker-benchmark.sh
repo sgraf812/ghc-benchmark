@@ -20,5 +20,5 @@ docker build -t ghc-bench .
 
 for diff in $DIFFS
 do
-  docker run -i --tty --rm -v $LOGS:/logs -v $DIFFS:/diffs -v $SCRIPTS:/scripts ghc-bench /scripts/diff-and-bench.sh $diff
+  docker run -i --tty --rm -v $LOGS:/logs -v $DIFFS:/diffs -v $SCRIPTS:/scripts ghc-bench /scripts/patch-and-bench.sh $diff
 done
