@@ -22,6 +22,7 @@ RUN apt-get install --yes python-sphinx
 RUN apt-get install --yes xz-utils
 RUN apt-get install --yes valgrind
 RUN apt-get install --yes time
+RUN apt-get install --yes build-essential
 
 ENV BASE 5748c79e5a7a6bd1b0bfffc514d8f4f4da92e815
 RUN git clone --recursive git://git.haskell.org/ghc.git

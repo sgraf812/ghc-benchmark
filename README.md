@@ -1,7 +1,7 @@
 # `ghc-benchmark`
 
 This is a harness I stole from Joachim Breitner (@nomeata) for reproducible, CI-like `NoFib` runs and `./validate`s based on Docker.
-I use this on both Windows (`docker-*.ps1`, haven't yet tested it since I refactored stuff) and Linux machines (`docker-*.sh`)
+I use this on both Windows (`docker-*.ps1`) and Linux machines (`docker-*.sh`).
 
 # Setup
 

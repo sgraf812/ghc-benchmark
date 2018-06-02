@@ -19,7 +19,7 @@ cp -r /ghc $1
 cd $1
 echo "Patching using /diffs/$1.diff"
 # git diff makes patch fail sometimes... We'll try to compile nonetheless
-patch -p1 < /diffs/$1.diff || true
+patch -p1 < /diffs/$1.diff
 echo "Running nofib"
 /scripts/run-nofib.sh
 
