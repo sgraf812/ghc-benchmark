@@ -24,7 +24,7 @@ RUN apt-get install --yes valgrind
 RUN apt-get install --yes time
 RUN apt-get install --yes build-essential
 
-ENV BASE 5748c79e5a7a6bd1b0bfffc514d8f4f4da92e815
+ENV BASE bb539cfe335e
 RUN git clone --recursive git://git.haskell.org/ghc.git
 RUN git -C ghc/ checkout $BASE
 RUN git -C ghc/ submodule update --init

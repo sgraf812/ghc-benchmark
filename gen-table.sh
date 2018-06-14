@@ -13,7 +13,7 @@ tmp=base
 # .. which means we have to filter all further occureces of 'base'.
 for diff in $diffs
 do
-  if [ $diff != "base" ]; then
+  if [ "x$diff" != "xbase" ]; then
     # add to the list
     tmp="$tmp $diff"
   fi
