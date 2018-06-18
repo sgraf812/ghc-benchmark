@@ -1,10 +1,10 @@
-FROM haskell:8.2.1
+FROM haskell:8.4.3
 MAINTAINER Sebastian Graf <sgraf1337@gmail.com>
 
 ENV PATH /root/.cabal/bin:$PATH
 
 RUN cabal update
-RUN cabal install html regex-compat
+RUN cabal install html regex-compat alex happy
 
 RUN apt-get update
 RUN apt-get install --yes autoconf
