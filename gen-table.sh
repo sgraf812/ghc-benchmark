@@ -27,9 +27,9 @@ logs=""
 buildlogs=""
 for diff in $diffs
 do
-  log=$(ls logs/$diff-*.log|tail -n1)
+  log=$(ls logs/$diff-20[0-9][0-9]-*.log|tail -n1)
   logs="$logs $log"
-  buildlog=$(ls logs/buildlog-$diff-*.log|tail -n1)
+  buildlog=$(ls logs/buildlog-$diff-20[0-9][0-9]-*.log|tail -n1)
   buildlogs="$buildlogs $buildlog"
 done
 
