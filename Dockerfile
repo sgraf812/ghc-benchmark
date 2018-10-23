@@ -33,7 +33,7 @@ RUN apt-key update
 RUN apt-get install --yes --allow-unauthenticated llvm-5.0-dev
 RUN apt-get install --yes --allow-unauthenticated llvm-6.0-dev
 
-ARG BASE=1a0a971b76c0b717794af9af4e27dcb488924800
+ARG BASE=0d2cdec78471728a0f2c487581d36acda68bb941
 RUN git clone --recursive git://git.haskell.org/ghc.git
 RUN git -C ghc/ checkout $BASE
 RUN git -C ghc/ submodule update --init
