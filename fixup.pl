@@ -5,7 +5,6 @@ use warnings;
 
 my $min = $ARGV[0];
 my $max = $ARGV[1];
-my $includeinfer = $ARGV[2];
 
 my $skipped = 0;
 my $amps = 0;
@@ -18,7 +17,7 @@ while (<STDIN>) {
 	# any interesting ratio? e.g. not in [$min,$max]
 	# also we include all regressions (they have a plus) if that's what is wanted
 	my @ratios = /(-?\d{1,2}.\d)\\%/g;
-	if ((grep { $_ < $min || $max < $_ } @ratios) || ($includeinfer && /infer/g)) {
+	if ((grep { $_ < $min || $max < $_ } @ratios)) {
 		$amps = () = /&/g;
 		s/^([^ ]*?) /\\progname{$1} /;
 		print;

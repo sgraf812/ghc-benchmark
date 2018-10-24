@@ -41,9 +41,9 @@ do
 done
 
 nofib-analyse --columns=Allocs,Instrs -i 0  $pruned > nofib-table-all.txt
-nofib-analyse --columns=Allocs,Instrs -l -i 0  $pruned | ./fixup.pl -0.3 0.0 1 > nofib-table.tex
-nofib-analyse --columns=Allocs -l -i 0  $pruned | ./fixup.pl 0.0 0.0 1 > nofib-table-alloc.tex
-nofib-analyse --columns=Instrs -l -i 0  $pruned | ./fixup.pl -3.0 1.0 0 > nofib-table-instrs.tex
+nofib-analyse --columns=Allocs,Instrs -l -i 0  $pruned | ./fixup.pl -0.3 0.0 > nofib-table.tex
+nofib-analyse --columns=Allocs -l -i 0  $pruned | ./fixup.pl 0.0 0.0 > nofib-table-alloc.tex
+nofib-analyse --columns=Instrs -l -i 0  $pruned | ./fixup.pl -3.0 1.0 > nofib-table-instrs.tex
 nofib-analyse --columns="Comp. Alloc,Comp. Time" -l -i 0  $pruned | ./summary-only.pl $logs | grep 'Geometric' | sed -e 's/Geometric Mean/nofib/'> nofib-comp-table.tex
 
 for log in $logs;
