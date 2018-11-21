@@ -18,7 +18,7 @@ echo "Copying /ghc to $1"
 cp -r /ghc $1
 cd $1
 echo "Patching using /diffs/$1.diff"
-patch -p1 < /diffs/$1.diff || true
+patch -p1 < /diffs/$1.diff
 echo "Validating"
 /scripts/validate.sh
 
