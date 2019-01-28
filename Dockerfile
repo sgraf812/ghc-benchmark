@@ -1,4 +1,4 @@
-FROM haskell:8.4.3
+FROM haskell:8.6.3
 MAINTAINER Sebastian Graf <sgraf1337@gmail.com>
 
 ENV PATH /root/.cabal/bin:$PATH
@@ -11,6 +11,8 @@ RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-5.0 main" >> /
 RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-5.0 main" >> /etc/apt/sources.list
 RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list
 RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list
+RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7.0 main" >> /etc/apt/sources.list
+RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7.0 main" >> /etc/apt/sources.list
 
 RUN apt-get update
 RUN apt-get install --yes autoconf
@@ -33,7 +35,9 @@ RUN apt-key update
 RUN apt-get install --yes --allow-unauthenticated llvm-5.0-dev
 RUN apt-get install --yes --allow-unauthenticated llvm-6.0-dev
 
-ARG BASE=0d2cdec78471728a0f2c487581d36acda68bb941
 RUN git clone --recursive git://git.haskell.org/ghc.git
+# GHC 8.6.3 release
+ARG BASE=31cd867e4d37072c3ce1d51efadc94e66ddc1c28
+RUN git -C ghc/ fetch --all
 RUN git -C ghc/ checkout $BASE
-RUN git -C ghc/ submodule update --init
+RUN git -C ghc/ submodule update --init --recursive
