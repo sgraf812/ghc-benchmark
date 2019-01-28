@@ -4,7 +4,7 @@ test -d nofib || { echo "No nofib found" ; exit 1 ;  }
 set -e
 set -o pipefail
 
-mode=norm
+export mode=norm # export for NoFib
 variant="-$mode"
 clean=yes
 threads=$(($(nproc --all) + 1))
@@ -33,11 +33,9 @@ else
 fi
 
 cd nofib/
-git checkout master
-make clean
 make boot
-# (make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -A128M -H1G -RTS' EXTRA_HC_OPTS='-fllvm -optlo -Os -fno-stg-lift-lams' mode=$mode -j$threads NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
-# (make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -A128M -H1G -RTS' EXTRA_HC_OPTS='-fllvm -optlo -Os' mode=$mode -j$threads NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
-(make EXTRA_RUNTEST_OPTS='-cachegrind +RTS -V0 -A128M -H1G -RTS' mode=$mode -j$threads NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
+
+(make EXTRA_RUNTEST_OPTS='-cachegrind' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
+# (make EXTRA_RUNTEST_OPTS='-cachegrind' EXTRA_HC_OPTS='-fllvm' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # fix a problem with nofib logs from cachegrind
 sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' /logs/$diff-$name.log
