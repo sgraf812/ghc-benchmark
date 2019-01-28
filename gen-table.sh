@@ -8,19 +8,6 @@ else
   diffs=$@
 fi
 
-# We always want to include the base diff at the first position
-tmp=base
-# .. which means we have to filter all further occureces of 'base'.
-for diff in $diffs
-do
-  if [ "x$diff" != "xbase" ]; then
-    # add to the list
-    tmp="$tmp $diff"
-  fi
-done
-
-diffs=$tmp
-
 # There's no way I know of to just map a function over each element
 # of a space-separated list inside in a variable. Hooray for sh!
 logs=""
@@ -34,9 +21,10 @@ do
 done
 
 pruned=""
+prune="(CS|CSD|FS|S|VS|VSD|VSM)"
 for log in $logs;
 do
-  sed '/==nofib== cacheprof/,/Finished making all in cacheprof/d' $log > $log-pruned
+  sed -E "/==nofib== $prune/,/Finished making all in $prune/d" $log > $log-pruned
   pruned="$pruned $log-pruned"
 done
 
