@@ -11,8 +11,8 @@ RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-5.0 main" >> /
 RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-5.0 main" >> /etc/apt/sources.list
 RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list
 RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list
-RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7.0 main" >> /etc/apt/sources.list
-RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7.0 main" >> /etc/apt/sources.list
+RUN echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7 main" >> /etc/apt/sources.list
+RUN echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7 main" >> /etc/apt/sources.list
 
 RUN apt-get update
 RUN apt-get install --yes autoconf
@@ -34,6 +34,7 @@ RUN apt-get install --yes build-essential
 RUN apt-key update
 RUN apt-get install --yes --allow-unauthenticated llvm-5.0-dev
 RUN apt-get install --yes --allow-unauthenticated llvm-6.0-dev
+RUN apt-get install --yes --allow-unauthenticated llvm-7-dev
 
 RUN git clone --recursive git://git.haskell.org/ghc.git
 # GHC 8.6.3 release
