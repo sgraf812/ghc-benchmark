@@ -35,6 +35,7 @@ fi
 cd nofib/
 make boot
 
+# (make NoFibRuns=0) 2>&1 | tee /logs/$diff-$name.log
 (make EXTRA_RUNTEST_OPTS='-cachegrind' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # (make EXTRA_RUNTEST_OPTS='-cachegrind' EXTRA_HC_OPTS='-fllvm' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # fix a problem with nofib logs from cachegrind
