@@ -1,11 +1,11 @@
-FROM haskell:8.8.3
+FROM haskell:8.10.2
 MAINTAINER Sebastian Graf <sgraf1337@gmail.com>
 
 ENV PATH /root/.cabal/bin:$PATH
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN cabal update
-RUN cabal install html regex-compat alex-3.2.5 happy
+RUN cabal install html regex-compat alex-3.2.6 happy
 
 RUN apt-get update
 RUN apt-get install --yes apt-transport-https ca-certificates wget
@@ -35,10 +35,10 @@ RUN apt-get install --yes build-essential
 RUN apt-key update
 RUN apt-get install --yes --allow-unauthenticated llvm-10-dev
 
-ARG M=0
+ARG M=1
 RUN git clone https://gitlab.haskell.org/ghc/ghc.git
-# master from 18 Feb 21
-ARG BASE=f78f001c91736e31cdfb23959647226f9bd9fe6b
+# master from 12 Apr 21
+ARG BASE=6974c9e478
 RUN git -C ghc/ fetch --all
 RUN git -C ghc/ checkout $BASE
 RUN git -C ghc/ submodule update --init --recursive
