@@ -1,4 +1,4 @@
-FROM haskell:8.10.2
+FROM haskell:9.2.3
 MAINTAINER Sebastian Graf <sgraf1337@gmail.com>
 
 ENV PATH /root/.cabal/bin:$PATH
@@ -37,8 +37,8 @@ RUN apt-get install --yes --allow-unauthenticated llvm-10-dev
 
 ARG M=1
 RUN git clone https://gitlab.haskell.org/ghc/ghc.git
-# master from 12 Apr 21
-ARG BASE=6974c9e478
+# master from 23 Sep 22
+ARG BASE=615e22789a04e74
 RUN git -C ghc/ fetch --all
 RUN git -C ghc/ checkout $BASE
 RUN git -C ghc/ submodule update --init --recursive

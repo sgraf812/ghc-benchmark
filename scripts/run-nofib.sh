@@ -22,11 +22,9 @@ echo ready to go...
 
 if [ "$clean" = yes ]
 then
-	make distclean
-	echo "BuildFlavour = bench" | cat - mk/build.mk.sample > mk/build.mk
 	perl boot
 	./configure $cachegrindconf
-	/usr/bin/time -o buildtime-$name make -j$threads 2>&1 |
+	/usr/bin/time -o buildtime-$name hadrian/build -j$threads --flavour=perf 2>&1 |
 		tee /logs/buildlog-$diff-$name.log
 else
 	make -C ghc 2 -j$threads
@@ -34,7 +32,7 @@ fi
 
 cd nofib/
 
-git checkout eef7fb72ba43adbbb0f
+git checkout master
 
 cat << EOF | patch -p1 --ignore-whitespace
 diff --git a/imaginary/Makefile b/imaginary/Makefile
@@ -70,7 +68,7 @@ make boot
 # cabal new-run -- nofib-run --compiler=$(readlink -f ../inplace/bin/ghc-stage2) --cachegrind --threads=$threads --speed=$mode --times=1 --output=/logs/$diff-$name
 
 # (make NoFibRuns=0) 2>&1 | tee /logs/$diff-$name.log
-(make EXTRA_RUNTEST_OPTS='-cachegrind' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
+(make --keep-going EXTRA_RUNTEST_OPTS='-cachegrind' NoFibRuns=1 HC=$(readlink -f ../_build/stage1/bin/ghc)) 2>&1 | tee /logs/$diff-$name.log
 # (make EXTRA_RUNTEST_OPTS='-cachegrind' EXTRA_HC_OPTS='-fllvm' NoFibRuns=1) 2>&1 | tee /logs/$diff-$name.log
 # fix a problem with nofib logs from cachegrind
 sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' /logs/$diff-$name.log
