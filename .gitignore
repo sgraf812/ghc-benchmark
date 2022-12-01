@@ -5,3 +5,4 @@ v*/
 nofib-*.tex
 nofib-*.txt
 ghc-*.tex
+ghc/
