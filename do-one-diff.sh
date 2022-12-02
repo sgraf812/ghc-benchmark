@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 set -e
+set -o pipefail
 
 TOP=$(readlink -f "$(dirname $0)")
 
@@ -22,9 +23,10 @@ echo "            Prepare clone              "
 echo "======================================="
 echo
 
-clone=$(mktemp -d)/$1
+clone=$(mktemp -d /tmp/ghc-benchmark-$1-XXXXXXXX)
+clone="$clone/$1" # $1 will be used as the name in the logs
 echo "Copying $TOP/ghc to $clone"
-cp -r $TOP/ghc $clone
+cp -r $TOP/ghc/. $clone
 
 cd $clone
 echo "Patching using $TOP/diffs/$1.diff"
@@ -38,9 +40,6 @@ echo "======================================="
 echo
 
 test -d nofib || { echo "No nofib found" ; exit 1 ;  }
-
-set -e
-set -o pipefail
 
 export mode=norm # export for NoFib
 variant="-$mode"
@@ -59,8 +58,8 @@ echo ready to go...
 echo $(pwd)
 
 perl ./boot
-sh ./configure ${CONFIGURE_ARGS} --disable-large-address-space
-/usr/bin/time -o $TOP/logs/buildtime-$name-$timestamp hadrian/build -j$threads --flavour=perf 2>&1 |
+sh ./configure ${CONFIGURE_ARGS} # --disable-large-address-space
+/usr/bin/time -o $TOP/logs/buildtime-$name-$timestamp hadrian/build -j$threads --flavour='perf+no_profiled_libs+no_dynamic_ghc' 2>&1 | \
 	tee $TOP/logs/buildlog-$name-$timestamp.log
 
 echo
@@ -111,3 +110,8 @@ make boot
 # (make EXTRA_RUNTEST_OPTS='-cachegrind' EXTRA_HC_OPTS='-fllvm' NoFibRuns=1) 2>&1 | tee $TOP/logs/$name-$timestamp.log
 # fix a problem with nofib logs from cachegrind
 sed -i -e 's/,  L2 cache misses/, 0 L2 cache misses/' $TOP/logs/$name-$timestamp.log
+
+echo "Removing clone"
+rm -rf $clone
+
+echo "Finished!"
